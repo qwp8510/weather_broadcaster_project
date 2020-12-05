@@ -28,6 +28,17 @@ class WeatherStation():
         return json.loads(weather.to_JSON())
 
 
+def trans_temp_kelvin_to_Celsius(temp):
+    return int(temp - 273.15)
+
+def enrich_general_model(weather_data):
+    return {
+        'temperature': trans_temp_kelvin_to_Celsius(weather_data.get('temperature', {}).get('temp')),
+        'humidity': weather_data.get('humidity'),
+        'rain': weather_data.get('rain') if weather_data.get('rain') else 0
+    }
+
+
 def main():
     api_key = 'here_is_your_owm_api_key'
     longitude, latitude = 121.5172, 25.0472  # Taipei Main Station
@@ -35,6 +46,8 @@ def main():
     weather_data = weather_station.get_data_by_coord(lon=longitude, lat=latitude)
     logger.info('weather station getting lon: {}, lat:{} data:{}'.format(
         longitude, latitude, weather_data))
+    general_model = enrich_general_model(weather_data)
+    logger.info('show general model data: {}'.format(general_model), general_model)
 
 
 if __name__ == '__main__':
