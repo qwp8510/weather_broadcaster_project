@@ -3,8 +3,12 @@ import json
 import logging
 from requests import Timeout
 import requests
+from os import path
+
+from utils import get_json_content
 
 
+CURRENT_PATH = path.dirname(path.abspath(__file__))
 logger = logging.getLogger(__name__)
 LINE_URL = 'https://notify-api.line.me/api/notify'
 
@@ -56,15 +60,15 @@ def send_general_model_message(token, msg):
 
 
 def main():
-    api_key = 'here_is_your_owm_api_key'
-    line_token = 'here_is_your_line_token'
-    longitude, latitude = 121.5172, 25.0472  # Taipei Main Station
-    weather_station = WeatherStation(owm_api_key=api_key)
-    weather_data = weather_station.get_data_by_coord(lon=longitude, lat=latitude)
-    logger.info('weather station getting lon: {}, lat:{} data:{}'.format(
-        longitude, latitude, weather_data))
-    general_model_msg = enrich_general_model(weather_data)
-    send_general_model_message(line_token, general_model_msg)
+    config = get_json_content(path.join(CURRENT_PATH, 'config.json'))
+    for user, user_info in config['users'].items():
+        weather_station = WeatherStation(owm_api_key=config.get('owm_api_key'))
+        weather_data = weather_station.get_data_by_coord(
+            lon=user_info.get('longitude', 0), lat=user_info.get('latitude', 0))
+        logger.info('weather station get user {} lon: {}, lat:{} data:{}'.format(
+            user, user_info.get('longitude', 0), user_info.get('latitude', 0), weather_data))
+        general_model_msg = enrich_general_model(weather_data)
+        send_general_model_message(user_info.get('line_token'), general_model_msg)
 
 
 if __name__ == '__main__':
