@@ -2,49 +2,30 @@ import pyowm
 import json
 import logging
 from requests import Timeout
-from os import path
+
 from abc import ABC, abstractmethod
 
 
-CURRENT_PATH = path.dirname(path.abspath(__file__))
 logger = logging.getLogger(__name__)
-LINE_URL = 'https://notify-api.line.me/api/notify'
 
 
-class Subject(ABC):
-    @abstractmethod
-    def register_weather_station(self, user, model):
-        pass
-
-    @abstractmethod
-    def remove_weather_station(self, user):
-        pass
-
-    @abstractmethod
-    def notify(self):
-        pass
-
-
-class WeatherStation(Subject):
+class WeatherStation(ABC):
     # document: https://pyowm.readthedocs.io/en/latest/pyowm.weatherapi25.html
     def __init__(self, owm_api_key=None):
         self._owm_api_key = owm_api_key
         self._owm = None
-        self.user_models = {}
 
+    @abstractmethod
     def register_weather_station(self, user, model):
-        self.user_models.setdefault(user, model)
+        pass
 
+    @abstractmethod
     def remove_weather_station(self, user):
-        if self.user_models.get(user):
-            del self.user_models[user]
-        else:
-            logger.warning('remove_weather_station fail with del unexist user: {}'.format(user))
+        pass
 
+    @abstractmethod
     def notify(self):
-        for model in self.user_models.values():
-            model.notify(self.get_data_by_coord(
-                lon=model.user_data.get('longitude', 0), lat=model.user_data.get('latitude', 0)))
+        pass
 
     @property
     def owm(self):
