@@ -23,6 +23,7 @@ class WeatherBroadcaster(WeatherStation):
             logger.warning('remove_weather_station fail with del unexist user: {}'.format(user))
 
     def notify(self):
-        for model in self.user_models.values():
+        models = self.user_models.copy()
+        for model in models.values():
             model.notify(self.get_data_by_coord(
                 lon=model.user_data.get('longitude', 0), lat=model.user_data.get('latitude', 0)))
