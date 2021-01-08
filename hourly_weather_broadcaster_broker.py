@@ -1,6 +1,6 @@
 from os import path
 import logging
-import time
+from time import sleep
 
 from utils import get_json_content
 from weather_broadcaster import WeatherBroadcaster
@@ -25,7 +25,7 @@ def main():
                     logger.error('fail with model {} error: {}'.format(
                         user_info.get('model_type'), err))
             weather_station.notify()
-            time.sleep(HOUR)
+            sleep(HOUR)
         except KeyboardInterrupt:
             logger.warning('keyboard interrupt\n')
             break
