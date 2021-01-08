@@ -29,7 +29,7 @@ class GeneralModelNotification(LineNotification):
 
     def notify(self, msg):
         logger.info('user: {} GeneralModel notify message: {}'.format(
-            self.user_data.get('user', 'NAME_IS_NEEDED'), msg))
+            self.user_data.get('user', 'NAME_IS_NEEDED'), self._enrich_message(msg)))
         return super().notify(self._enrich_message(msg))
 
     def _enrich_message(self, msg):
@@ -49,7 +49,7 @@ class PremiumModelNotification(LineNotification):
 
     def notify(self, msg):
         logger.info('user: {} PremiumModel notify message: {}'.format(
-            self.user_data.get('user', 'NAME_IS_NEEDED'), msg))
+            self.user_data.get('user', 'NAME_IS_NEEDED'), self._enrich_message(msg)))
         return super().notify(self._enrich_message(msg))
 
     def _enrich_message(self, msg):
