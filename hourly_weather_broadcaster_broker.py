@@ -13,17 +13,17 @@ HOUR = 60 * 60
 
 
 def main():
+    user_data = get_json_content(path.join(CURRENT_PATH, 'user_data.json'))
+    weather_station = WeatherBroadcaster(owm_api_key=user_data.get('owm_api_key'))
+    for user, user_info in user_data['users'].items():
+        try:
+            model = get_notification_model(user_info.get('model_type'))
+            model(weather_station, user_info)
+        except Exception as err:
+            logger.error('fail with model {} error: {}'.format(
+                user_info.get('model_type'), err))
     while True:
         try:
-            user_data = get_json_content(path.join(CURRENT_PATH, 'user_data.json'))
-            weather_station = WeatherBroadcaster(owm_api_key=user_data.get('owm_api_key'))
-            for user, user_info in user_data['users'].items():
-                try:
-                    model = get_notification_model(user_info.get('model_type'))
-                    model(weather_station, user_info)
-                except Exception as err:
-                    logger.error('fail with model {} error: {}'.format(
-                        user_info.get('model_type'), err))
             weather_station.notify()
             sleep(HOUR)
         except KeyboardInterrupt:
