@@ -1,10 +1,8 @@
 import logging
-from os import path
 
 from weather_station import WeatherStation
 
 
-CURRENT_PATH = path.dirname(path.abspath(__file__))
 logger = logging.getLogger(__name__)
 
 
@@ -13,10 +11,10 @@ class WeatherBroadcaster(WeatherStation):
         super().__init__(owm_api_key=owm_api_key)
         self.user_models = {}
 
-    def register_weather_station(self, user, model):
+    def register_observer(self, user, model):
         self.user_models.setdefault(user, model)
 
-    def remove_weather_station(self, user):
+    def remove_observer(self, user):
         if self.user_models.get(user):
             del self.user_models[user]
         else:

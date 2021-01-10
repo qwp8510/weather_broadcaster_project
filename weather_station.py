@@ -16,11 +16,11 @@ class WeatherStation(ABC):
         self._owm = None
 
     @abstractmethod
-    def register_weather_station(self, user, model):
+    def register_observer(self, user, model):
         pass
 
     @abstractmethod
-    def remove_weather_station(self, user):
+    def remove_observer(self, user):
         pass
 
     @abstractmethod
