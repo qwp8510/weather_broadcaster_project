@@ -60,7 +60,7 @@ class PrecipitationModelNotification(LineNotification):
     def notify(self, msg):
         if self._valid_precipitation_probability(msg.get('status', 'Null')):
             self.weather_broadcaster.remove_observer(self.user_data.get('user'))
-            logger.info('user: {} GeneralModel notify message: {}'.format(
+            logger.info('user: {} PrecipitationModel notify message: {}'.format(
                 self.user_data.get('user', 'NAME_IS_NEEDED'), self._enrich_message(msg)))
             return super().notify(self._enrich_message(msg))
 
