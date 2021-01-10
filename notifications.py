@@ -49,7 +49,7 @@ class PremiumModelNotification(LineNotification):
 
 
 class PrecipitationModelNotification(LineNotification):
-    precipitation_status = ['Drizzle', 'Rain', 'Thunderstorm']
+    precipitation_status = ['Drizzle', 'Rain', 'Thunderstorm'] # refer to owm
 
     def __init__(self, weather_broadcaster, user_data):
         self.user_data = user_data
