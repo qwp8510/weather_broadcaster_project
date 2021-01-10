@@ -1,6 +1,6 @@
-from line_notification import GeneralModelNotification
-from line_notification import PremiumModelNotification
-from line_notification import PrecipitationModelNotification
+from notifications import GeneralModelNotification
+from notifications import PremiumModelNotification
+from notifications import PrecipitationModelNotification
 
 
 def get_notification_model(model_type):
